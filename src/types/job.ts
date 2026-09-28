@@ -17,3 +17,9 @@ export interface JobsApiResponse {
     data: Job[];
     message?: string;
 }
+
+export interface JobApiResponse {
+    success: boolean;
+    data: Job;
+    message?: string;
+}
