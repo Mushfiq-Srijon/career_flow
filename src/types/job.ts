@@ -11,3 +11,9 @@ export interface Job {
     requirements: string[];
     responsibilities: string[];
 }
+
+export interface JobsApiResponse {
+    success: boolean;
+    data: Job[];
+    message?: string;
+}
