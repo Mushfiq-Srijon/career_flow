@@ -98,7 +98,7 @@ export default function JobsPage() {
         <main>
             {/* Hero */}
             <section className="m-0 rounded-none border-0 md:mx-5 md:mb-5 md:mt-0 md:rounded-b-3xl md:border-b border-slate-200 bg-linear-to-b from-blue-50 to-violet-200">
-                <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,520px)] lg:gap-12 lg:px-8 lg:py-16">
+                <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(280px,449px)] lg:gap-12 lg:px-8 lg:py-16">
                     <div className="max-w-3xl">
                         <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-blue-600">
                             Job Finder
@@ -121,14 +121,15 @@ export default function JobsPage() {
                         </div>
                     </div>
 
-                    <div className="relative mx-auto aspect-4/3 w-full max-w-[520px] lg:mx-0">
+                    <div className="mx-auto w-full max-w-[449px] lg:mx-0">
                         <Image
                             src="/banner.png"
                             alt=""
-                            fill
+                            width={449}
+                            height={356}
                             priority
-                            sizes="(min-width: 1024px) 520px, 90vw"
-                            className="object-contain"
+                            sizes="(min-width: 1024px) 449px, 90vw"
+                            className="h-auto w-full"
                         />
                     </div>
                 </div>
