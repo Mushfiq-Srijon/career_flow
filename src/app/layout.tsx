@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "JobFinder",
+  title: "CareerFlow",
   description: "Find your next job opportunity",
 };
 

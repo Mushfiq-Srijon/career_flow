@@ -96,7 +96,7 @@ export default function JobsPage() {
     return (
         <main>
             {/* Hero */}
-            <section className="border-b border-slate-200 bg-white">
+            <section className="m-0 rounded-none border-0 md:m-5 md:rounded-b-3xl md:border-b border-slate-200 bg-linear-to-b from-blue-50 to-violet-200">
                 <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
                     <div className="max-w-3xl">
                         <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-blue-600">
