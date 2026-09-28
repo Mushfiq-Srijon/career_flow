@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 
 import EmptyJobs from "@/components/jobs/EmptyJobs";
 import JobCard from "@/components/jobs/JobCard";
@@ -96,8 +97,8 @@ export default function JobsPage() {
     return (
         <main>
             {/* Hero */}
-            <section className="m-0 rounded-none border-0 md:m-5 md:rounded-b-3xl md:border-b border-slate-200 bg-linear-to-b from-blue-50 to-violet-200">
-                <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+            <section className="m-0 rounded-none border-0 md:mx-5 md:mb-5 md:mt-0 md:rounded-b-3xl md:border-b border-slate-200 bg-linear-to-b from-blue-50 to-violet-200">
+                <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,520px)] lg:gap-12 lg:px-8 lg:py-16">
                     <div className="max-w-3xl">
                         <p className="mb-4 text-sm font-semibold uppercase tracking-wider text-blue-600">
                             Job Finder
@@ -118,6 +119,17 @@ export default function JobsPage() {
                                 onChange={setSearch}
                             />
                         </div>
+                    </div>
+
+                    <div className="relative mx-auto aspect-4/3 w-full max-w-[520px] lg:mx-0">
+                        <Image
+                            src="/banner.png"
+                            alt=""
+                            fill
+                            priority
+                            sizes="(min-width: 1024px) 520px, 90vw"
+                            className="object-contain"
+                        />
                     </div>
                 </div>
             </section>
