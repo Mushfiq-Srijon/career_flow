@@ -9,7 +9,7 @@ export default function JobCard({ job }: JobCardProps) {
     return (
         <Link
             href={`/jobs/${job.id}`}
-            className="group block rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg"
+            className="group block rounded-2xl border border-slate-200 bg-linear-to-b from-blue-50 to-blue-100 p-6 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-purple-500 hover:shadow-lg"
         >
             <div className="flex items-start justify-between gap-4">
                 <div>

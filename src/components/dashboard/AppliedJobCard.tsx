@@ -10,7 +10,7 @@ export default function AppliedJobCard({
     job,
 }: AppliedJobCardProps) {
     return (
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="rounded-2xl border border-slate-200 bg-linear-to-b from-blue-50 to-blue-100 p-6 shadow-sm hover:border-purple-500 hover:shadow-lg">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                     <h2 className="text-lg font-semibold text-slate-900">
