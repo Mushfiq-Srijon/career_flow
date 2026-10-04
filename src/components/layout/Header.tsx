@@ -41,6 +41,18 @@ export default function Header() {
                     >
                         Applied Jobs
                     </Link>
+                    <Link
+                        href="/sign-in"
+                        className="rounded-lg px-2.5 py-2 text-xs font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 sm:px-3 sm:text-sm"
+                    >
+                        Sign In
+                    </Link>
+                    <Link
+                        href="/sign-up"
+                        className="rounded-lg px-2.5 py-2 text-xs font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 sm:px-3 sm:text-sm"
+                    >
+                        Sign Up
+                    </Link>
                 </nav>
             </div>
         </header>
