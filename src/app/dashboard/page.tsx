@@ -4,24 +4,27 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import AppliedJobCard from "@/components/dashboard/AppliedJobCard";
-import { getJobs } from "@/lib/api";
+import { getApplications, getJobs } from "@/lib/api";
 import { useSession } from "@/lib/auth-client";
-import { getAppliedJobIds } from "@/lib/storage";
 import { Job } from "@/types/job";
 
 export default function DashboardPage() {
-    const { data: session } = useSession();
+    const { data: session, isPending: isSessionPending } = useSession();
     const [appliedJobs, setAppliedJobs] = useState<Job[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     useEffect(() => {
+        if (isSessionPending) {
+            return;
+        }
+
         async function loadAppliedJobs() {
             try {
                 setLoading(true);
                 setError("");
 
-                const appliedJobIds = getAppliedJobIds();
+                const applicationsResponse = await getApplications();
                 const response = await getJobs();
 
                 if (!response.success) {
@@ -29,7 +32,9 @@ export default function DashboardPage() {
                 }
 
                 const jobs = response.data.filter((job) =>
-                    appliedJobIds.includes(job.id)
+                    applicationsResponse.data.some(
+                        (application) => application.jobId === job.id
+                    )
                 );
 
                 setAppliedJobs(jobs);
@@ -41,8 +46,18 @@ export default function DashboardPage() {
             }
         }
 
-        loadAppliedJobs();
-    }, []);
+        const timeoutId = window.setTimeout(() => {
+            if (!session?.user) {
+                setError("Please sign in to view your applied jobs.");
+                setLoading(false);
+                return;
+            }
+
+            void loadAppliedJobs();
+        }, 0);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [isSessionPending, session?.user]);
 
     return (
         <main className="min-h-[calc(100vh-73px)] bg-slate-50">
