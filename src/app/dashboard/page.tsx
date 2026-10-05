@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 import AppliedJobCard from "@/components/dashboard/AppliedJobCard";
 import { getJobs } from "@/lib/api";
+import { useSession } from "@/lib/auth-client";
 import { getAppliedJobIds } from "@/lib/storage";
 import { Job } from "@/types/job";
 
 export default function DashboardPage() {
+    const { data: session } = useSession();
     const [appliedJobs, setAppliedJobs] = useState<Job[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -54,7 +57,9 @@ export default function DashboardPage() {
                     </h1>
 
                     <p className="mt-3 text-sm leading-6 text-slate-600">
-                        View the jobs you have applied for.
+                        {session?.user
+                            ? `Signed in as ${session.user.name || session.user.email}.`
+                            : "View the jobs you have applied for."}
                     </p>
                 </div>
             </section>
@@ -97,12 +102,12 @@ export default function DashboardPage() {
                             Browse available jobs and apply to the ones you are interested in.
                         </p>
 
-                        <a
+                        <Link
                             href="/jobs"
                             className="mt-5 inline-flex rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
                         >
                             Browse jobs
-                        </a>
+                        </Link>
                     </div>
                 )}
 
