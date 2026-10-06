@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Dropdown, Label } from "@heroui/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -11,7 +12,6 @@ export default function Header() {
     const router = useRouter();
     const { data: session } = useSession();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isProfileOpen, setIsProfileOpen] = useState(false);
 
     const isJobsPage =
         pathname === "/jobs" || pathname.startsWith("/jobs/");
@@ -27,7 +27,6 @@ export default function Header() {
 
     async function handleSignOut() {
         await signOut();
-        setIsProfileOpen(false);
         closeMobileMenu();
         router.push("/sign-in");
     }
@@ -66,7 +65,6 @@ export default function Header() {
                     >
                         Find Jobs
                     </Link>
-
                     <Link
                         href="/dashboard"
                         onClick={closeMobileMenu}
@@ -75,33 +73,50 @@ export default function Header() {
                             : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                             }`}
                     >
-                        Applied Jobs
+                        Dashboard
                     </Link>
                     {session?.user ? (
-                        <div className="relative sm:ml-2">
-                            <button
-                                type="button"
-                                onClick={() => setIsProfileOpen((open) => !open)}
-                                aria-expanded={isProfileOpen}
-                                className="flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-medium text-slate-700 transition hover:bg-slate-100 sm:w-auto sm:text-sm"
-                            >
-                                <span className="max-w-[200px] truncate">{profileName}</span>
-                                <span
-                                    aria-hidden="true"
-                                    className={`h-2 w-2 border-b-2 border-r-2 border-slate-500 transition-transform ${isProfileOpen ? "-rotate-135" : "rotate-45"}`}
-                                />
-                            </button>
-                            {isProfileOpen && (
-                                <div className="mt-1 w-full rounded-lg border border-slate-200 bg-white p-1 shadow-lg sm:absolute sm:right-0 sm:top-full sm:mt-2 sm:w-40">
-                                    <button
-                                        type="button"
-                                        onClick={handleSignOut}
-                                        className="w-full rounded-md px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+                        <div className="sm:ml-2">
+                            <Dropdown>
+                                <Dropdown.Trigger className="flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-2 text-left text-xs font-medium text-slate-700 transition hover:bg-slate-100 sm:w-auto sm:text-sm">
+                                    <span className="max-w-[200px] truncate">
+                                        {profileName}
+                                    </span>
+                                    <span
+                                        aria-hidden="true"
+                                        className="h-2 w-2 rotate-45 border-b-2 border-r-2 border-slate-500"
+                                    />
+                                </Dropdown.Trigger>
+
+                                <Dropdown.Popover placement="bottom end">
+                                    <Dropdown.Menu
+                                        onAction={(key) => {
+                                            if (key === "profile") {
+                                                router.push("/profile");
+                                            }
+
+                                            if (key === "logout") {
+                                                handleSignOut();
+                                            }
+                                        }}
                                     >
-                                        Log out
-                                    </button>
-                                </div>
-                            )}
+                                        <Dropdown.Item
+                                            id="profile"
+                                            textValue="Profile"
+                                        >
+                                            <Label>Profile</Label>
+                                        </Dropdown.Item>
+
+                                        <Dropdown.Item
+                                            id="logout"
+                                            textValue="Log out"
+                                            variant="danger"
+                                        >
+                                            <Label>Log out</Label>
+                                        </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown.Popover>
+                            </Dropdown>
                         </div>
                     ) : (
                         <>
