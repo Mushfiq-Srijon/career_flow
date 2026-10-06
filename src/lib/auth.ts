@@ -8,6 +8,13 @@ export const db = client.db("career_flow_db");
 export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
+        autoSignIn: false,
+    },
+    socialProviders: {
+        google: {
+            clientId: process.env.BETTER_AUTH_GOOGLE_CLIENT_ID as string,
+            clientSecret: process.env.BETTER_AUTH_GOOGLE_SECRET as string,
+        },
     },
 
     database: mongodbAdapter(db, {
