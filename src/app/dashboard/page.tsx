@@ -1,24 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 import AppliedJobCard from "@/components/dashboard/AppliedJobCard";
-import { getJobs } from "@/lib/api";
-import { getAppliedJobIds } from "@/lib/storage";
+import { getApplications, getJobs } from "@/lib/api";
+import { useSession } from "@/lib/auth-client";
 import { Job } from "@/types/job";
 
 export default function DashboardPage() {
+    const { data: session, isPending: isSessionPending } = useSession();
     const [appliedJobs, setAppliedJobs] = useState<Job[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     useEffect(() => {
+        if (isSessionPending) {
+            return;
+        }
+
         async function loadAppliedJobs() {
             try {
                 setLoading(true);
                 setError("");
 
-                const appliedJobIds = getAppliedJobIds();
+                const applicationsResponse = await getApplications();
                 const response = await getJobs();
 
                 if (!response.success) {
@@ -26,7 +32,9 @@ export default function DashboardPage() {
                 }
 
                 const jobs = response.data.filter((job) =>
-                    appliedJobIds.includes(job.id)
+                    applicationsResponse.data.some(
+                        (application) => application.jobId === job.id
+                    )
                 );
 
                 setAppliedJobs(jobs);
@@ -38,8 +46,18 @@ export default function DashboardPage() {
             }
         }
 
-        loadAppliedJobs();
-    }, []);
+        const timeoutId = window.setTimeout(() => {
+            if (!session?.user) {
+                setError("Please sign in to view your applied jobs.");
+                setLoading(false);
+                return;
+            }
+
+            void loadAppliedJobs();
+        }, 0);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [isSessionPending, session?.user]);
 
     return (
         <main className="min-h-[calc(100vh-73px)] bg-slate-50">
@@ -54,7 +72,9 @@ export default function DashboardPage() {
                     </h1>
 
                     <p className="mt-3 text-sm leading-6 text-slate-600">
-                        View the jobs you have applied for.
+                        {session?.user
+                            ? `Signed in as ${session.user.name || session.user.email}.`
+                            : "View the jobs you have applied for."}
                     </p>
                 </div>
             </section>
@@ -97,12 +117,12 @@ export default function DashboardPage() {
                             Browse available jobs and apply to the ones you are interested in.
                         </p>
 
-                        <a
+                        <Link
                             href="/jobs"
                             className="mt-5 inline-flex rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
                         >
                             Browse jobs
-                        </a>
+                        </Link>
                     </div>
                 )}
 

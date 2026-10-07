@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { applyToJob, isJobApplied } from "@/lib/storage";
+import { applyToJob, getApplications } from "@/lib/api";
+import { useSession } from "@/lib/auth-client";
 import { Job } from "@/types/job";
 
 interface JobDetailsProps {
@@ -11,19 +12,46 @@ interface JobDetailsProps {
 }
 
 export default function JobDetails({ job }: JobDetailsProps) {
+    const { data: session } = useSession();
     const [applied, setApplied] = useState(false);
+    const [isApplying, setIsApplying] = useState(false);
+    const [error, setError] = useState("");
 
     useEffect(() => {
-        setApplied(isJobApplied(job.id));
-    }, [job.id]);
+        const timeoutId = window.setTimeout(() => {
+            getApplications()
+                .then((response) => {
+                    setApplied(response.data.some((application) => application.jobId === job.id));
+                })
+                .catch(() => {
+                    setApplied(false);
+                });
+        }, 0);
 
-    function handleApply() {
-        if (applied) {
+        return () => window.clearTimeout(timeoutId);
+    }, [job.id, session?.user.id]);
+
+    async function handleApply() {
+        if (applied || isApplying) {
             return;
         }
 
-        applyToJob(job.id);
-        setApplied(true);
+        if (!session?.user) {
+            setError("Please sign in before applying for a job.");
+            return;
+        }
+
+        setError("");
+        setIsApplying(true);
+
+        try {
+            await applyToJob(job.id);
+            setApplied(true);
+        } catch (error) {
+            setError(error instanceof Error ? error.message : "Unable to apply for this job.");
+        } finally {
+            setIsApplying(false);
+        }
     }
 
     return (
@@ -114,14 +142,19 @@ export default function JobDetails({ job }: JobDetailsProps) {
                         <button
                             type="button"
                             onClick={handleApply}
-                            disabled={applied}
+                            disabled={applied || isApplying}
                             className={`w-full rounded-xl px-5 py-3 text-sm font-semibold transition sm:w-auto ${applied
                                     ? "cursor-not-allowed bg-green-100 text-green-700"
                                     : "bg-blue-600 text-white hover:bg-blue-700"
                                 }`}
                         >
-                            {applied ? "Applied ✓" : "Apply for this job"}
+                            {applied ? "Applied" : isApplying ? "Applying..." : "Apply for this job"}
                         </button>
+                        {error && (
+                            <p role="alert" className="mt-3 text-sm text-red-600">
+                                {error}
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>
