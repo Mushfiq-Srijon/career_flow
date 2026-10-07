@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import AppliedJobCard from "@/components/dashboard/AppliedJobCard";
 import { getApplications, getJobs } from "@/lib/api";
@@ -9,6 +10,7 @@ import { useSession } from "@/lib/auth-client";
 import { Job } from "@/types/job";
 
 export default function DashboardPage() {
+    const router = useRouter();
     const { data: session, isPending: isSessionPending } = useSession();
     const [appliedJobs, setAppliedJobs] = useState<Job[]>([]);
     const [loading, setLoading] = useState(true);
@@ -16,6 +18,11 @@ export default function DashboardPage() {
 
     useEffect(() => {
         if (isSessionPending) {
+            return;
+        }
+
+        if (!session?.user) {
+            router.replace("/sign-in");
             return;
         }
 
@@ -46,18 +53,8 @@ export default function DashboardPage() {
             }
         }
 
-        const timeoutId = window.setTimeout(() => {
-            if (!session?.user) {
-                setError("Please sign in to view your applied jobs.");
-                setLoading(false);
-                return;
-            }
-
-            void loadAppliedJobs();
-        }, 0);
-
-        return () => window.clearTimeout(timeoutId);
-    }, [isSessionPending, session?.user]);
+        void loadAppliedJobs();
+    }, [isSessionPending, session?.user, router]);
 
     return (
         <main className="min-h-[calc(100vh-73px)] bg-slate-50">
