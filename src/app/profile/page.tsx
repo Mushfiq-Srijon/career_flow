@@ -163,7 +163,7 @@ export default function Profile() {
                 </div>
 
                 {/* Profile Overview */}
-                <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+                <section className="mb-6 rounded-2xl border border-blue-500 bg-blue-400 p-6 shadow-2xl sm:p-8">
                     <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
                         <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-blue-100 text-2xl font-bold text-blue-700">
                             {profileName
@@ -172,15 +172,15 @@ export default function Profile() {
                         </div>
 
                         <div>
-                            <h2 className="text-xl font-semibold text-slate-900">
+                            <h2 className="text-xl font-bold text-slate-900">
                                 {profileName || "Your Name"}
                             </h2>
 
-                            <p className="mt-1 text-sm text-slate-500">
+                            <p className="mt-1 text-sm text-black font-semibold">
                                 {email}
                             </p>
 
-                            <p className="mt-2 text-sm text-slate-600">
+                            <p className="mt-2 text-sm text-black">
                                 Complete your profile to make your CareerFlow
                                 account more useful for your job search.
                             </p>
@@ -190,7 +190,7 @@ export default function Profile() {
 
                 {/* Personal Information */}
                 <Form
-                    className="mb-6 w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
+                    className="mb-6 w-full rounded-2xl border border-slate-300 bg-slate-200 p-6 shadow-slate-300 shadow-xl sm:p-8"
                     onSubmit={onSubmit}
                 >
                     <Fieldset>
@@ -269,7 +269,7 @@ export default function Profile() {
 
                                     <Input
                                         name="professionalTitle"
-                                        className="mt-2"
+                                        className="m-2"
                                         placeholder="e.g. Full Stack Developer"
                                         value={professionalTitle}
                                         onChange={(event) => setProfessionalTitle(event.target.value)}
@@ -281,7 +281,7 @@ export default function Profile() {
 
                                     <Input
                                         name="location"
-                                        className="mt-2"
+                                        className="m-2"
                                         placeholder="e.g. Dhaka, Bangladesh"
                                         value={location}
                                         onChange={(event) => setLocation(event.target.value)}
@@ -294,7 +294,7 @@ export default function Profile() {
 
                                 <Input
                                     name="skills"
-                                    className="mt-2"
+                                    className="m-2"
                                     placeholder="e.g. React, Next.js, Laravel, MySQL"
                                     value={skills}
                                     onChange={(event) => setSkills(event.target.value)}
@@ -316,7 +316,7 @@ export default function Profile() {
                             </div>
 
                             <div className="space-y-5">
-                                <div>
+                                {/* <div>
                                     <Label>Resume link</Label>
                                     <Input
                                         name="resumeUrl"
@@ -329,7 +329,7 @@ export default function Profile() {
                                     <p className="mt-1 text-xs text-slate-500">
                                         Add a public link to your resume.
                                     </p>
-                                </div>
+                                </div> */}
 
                                 <div className="grid gap-5 sm:grid-cols-2">
                                     <div>
@@ -337,7 +337,7 @@ export default function Profile() {
 
                                         <Input
                                             name="githubUrl"
-                                            className="mt-2"
+                                            className="m-2"
                                             type="url"
                                             placeholder="https://github.com/username"
                                             value={githubUrl}
@@ -350,7 +350,7 @@ export default function Profile() {
 
                                         <Input
                                             name="linkedinUrl"
-                                            className="mt-2"
+                                            className="m-2"
                                             type="url"
                                             placeholder="https://linkedin.com/in/username"
                                             value={linkedinUrl}
@@ -364,7 +364,7 @@ export default function Profile() {
 
                                     <Input
                                         name="portfolioUrl"
-                                        className="mt-2"
+                                        className="m-2"
                                         type="url"
                                         placeholder="https://yourportfolio.com"
                                         value={portfolioUrl}
@@ -393,7 +393,7 @@ export default function Profile() {
 
                                     <Input
                                         name="preferredJobType"
-                                        className="mt-2"
+                                        className="m-2"
                                         placeholder="Full-time"
                                         value={preferredJobType}
                                         onChange={(event) => setPreferredJobType(event.target.value)}
@@ -405,7 +405,7 @@ export default function Profile() {
 
                                     <Input
                                         name="workArrangement"
-                                        className="mt-2"
+                                        className="m-2"
                                         placeholder="Remote / Hybrid / On-site"
                                         value={workArrangement}
                                         onChange={(event) => setWorkArrangement(event.target.value)}
@@ -417,7 +417,7 @@ export default function Profile() {
 
                                     <Input
                                         name="preferredLocation"
-                                        className="mt-2"
+                                        className="m-2"
                                         placeholder="Dhaka, Bangladesh"
                                         value={preferredLocation}
                                         onChange={(event) => setPreferredLocation(event.target.value)}
@@ -429,7 +429,7 @@ export default function Profile() {
 
                                     <Input
                                         name="expectedSalary"
-                                        className="mt-2"
+                                        className="m-2"
                                         placeholder="e.g. 50,000 BDT"
                                         value={expectedSalary}
                                         onChange={(event) => setExpectedSalary(event.target.value)}
