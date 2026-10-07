@@ -28,7 +28,7 @@ export default function Header() {
     async function handleSignOut() {
         await signOut();
         closeMobileMenu();
-        router.push("/sign-in");
+        window.location.href = "/sign-in";
     }
 
     return (
