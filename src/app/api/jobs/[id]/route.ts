@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 
+import { db } from "@/lib/auth";
 import { jobs } from "@/data/jobs";
+import { Job } from "@/types/job";
 
 interface RouteContext {
     params: Promise<{
@@ -15,7 +17,13 @@ export async function GET(
     try {
         const { id } = await context.params;
 
-        const job = jobs.find((job) => job.id === id);
+        const sampleJob = jobs.find((job) => job.id === id);
+
+        const recruiterJob = sampleJob
+            ? null
+            : await db.collection<Job>("jobs").findOne({ id });
+
+        const job = sampleJob || recruiterJob;
 
         if (!job) {
             return NextResponse.json(
