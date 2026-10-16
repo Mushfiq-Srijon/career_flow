@@ -3,22 +3,19 @@ import { headers } from "next/headers";
 import { randomUUID } from "node:crypto";
 
 import { auth, db } from "@/lib/auth";
-import { jobs } from "@/data/jobs";
 import { Job } from "@/types/job";
 
 const jobsCollection = db.collection<Job>("jobs");
+
 
 export async function GET() {
     try {
         const recruiterJobs = await jobsCollection.find({}).toArray();
 
-        return NextResponse.json(
-            {
-                success: true,
-                data: [...jobs, ...recruiterJobs],
-            },
-            { status: 200 }
-        );
+        return NextResponse.json({
+            success: true,
+            data: recruiterJobs,
+        });
     } catch {
         return NextResponse.json(
             {
@@ -29,6 +26,7 @@ export async function GET() {
         );
     }
 }
+
 
 export async function POST(request: Request) {
     try {
@@ -58,6 +56,7 @@ export async function POST(request: Request) {
 
         const body = await request.json();
 
+
         if (
             typeof body.title !== "string" ||
             !body.title.trim() ||
@@ -67,18 +66,16 @@ export async function POST(request: Request) {
             !body.location.trim() ||
             typeof body.description !== "string" ||
             !body.description.trim() ||
+            typeof body.requirements !== "string" ||
+            !body.requirements.trim() ||
+            typeof body.responsibilities !== "string" ||
+            !body.responsibilities.trim() ||
             typeof body.salary?.min !== "number" ||
+            !Number.isFinite(body.salary.min) ||
             typeof body.salary?.max !== "number" ||
+            !Number.isFinite(body.salary.max) ||
             body.salary.min < 0 ||
-            body.salary.max < body.salary.min ||
-            !Array.isArray(body.requirements) ||
-            !body.requirements.every(
-                (item: unknown) => typeof item === "string"
-            ) ||
-            !Array.isArray(body.responsibilities) ||
-            !body.responsibilities.every(
-                (item: unknown) => typeof item === "string"
-            )
+            body.salary.max < body.salary.min
         ) {
             return NextResponse.json(
                 {
@@ -88,6 +85,7 @@ export async function POST(request: Request) {
                 { status: 400 }
             );
         }
+
 
         const newJob: Job = {
             id: randomUUID(),
@@ -99,10 +97,11 @@ export async function POST(request: Request) {
                 min: body.salary.min,
                 max: body.salary.max,
             },
-            description: body.description.trim(),
+            description: body.description,
             requirements: body.requirements,
             responsibilities: body.responsibilities,
         };
+
 
         await jobsCollection.insertOne(newJob);
 

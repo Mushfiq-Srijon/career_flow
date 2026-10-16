@@ -16,7 +16,12 @@ const SignInPage = () => {
 
     useEffect(() => {
         if (!isSessionPending && session?.user) {
-            router.replace("/dashboard");
+            const dashboardPath =
+                session.user.activeMode === "recruiter"
+                    ? "/recruiter/dashboard"
+                    : "/dashboard";
+
+            router.replace(dashboardPath);
         }
     }, [isSessionPending, router, session?.user]);
 
@@ -49,7 +54,12 @@ const SignInPage = () => {
             if (result.error) {
                 setError(result.error.message || "Unable to sign in.");
             } else {
-                router.push("/dashboard");
+                const dashboardPath =
+                    result.data?.user?.activeMode === "recruiter"
+                        ? "/recruiter/dashboard"
+                        : "/dashboard";
+
+                router.replace(dashboardPath);
             }
         } catch {
             setError("The authentication service is unavailable. Please try again.");

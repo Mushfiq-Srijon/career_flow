@@ -26,6 +26,11 @@ export default function DashboardPage() {
             return;
         }
 
+        if (session.user.activeMode === "recruiter") {
+            router.replace("/recruiter/dashboard");
+            return;
+        }
+
         async function loadAppliedJobs() {
             try {
                 setLoading(true);

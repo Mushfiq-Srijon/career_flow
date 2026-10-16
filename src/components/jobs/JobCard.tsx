@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Job } from "@/types/job";
+import { getPlainText } from "@/lib/job-content";
 
 interface JobCardProps {
     job: Job;
@@ -28,7 +29,7 @@ export default function JobCard({ job }: JobCardProps) {
             </div>
 
             <p className="mt-5 line-clamp-2 text-sm leading-6 text-slate-600">
-                {job.description}
+                {getPlainText(job.description)}
             </p>
 
             <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
