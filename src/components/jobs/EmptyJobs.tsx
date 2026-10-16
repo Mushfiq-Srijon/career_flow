@@ -10,7 +10,7 @@ export default function EmptyJobs() {
             </h2>
 
             <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
-                We couldn't find any jobs matching your current search or filters.
+                We couldn&apos;t find any jobs matching your current search or filters.
                 Try changing your search criteria.
             </p>
         </div>

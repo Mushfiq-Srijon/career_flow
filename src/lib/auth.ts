@@ -14,10 +14,32 @@ export const auth = betterAuth({
                 required: false,
                 input: true,
             },
-            professionalTitle: { type: "string", required: false, input: true },
-            location: { type: "string", required: false, input: true },
-            skills: { type: "string", required: false, input: true },
-            resumeUrl: { type: "string", required: false, input: true },
+            activeMode: {
+                type: "string",
+                required: false,
+                defaultValue: "seeker",
+                input: true,
+            },
+            professionalTitle: { 
+                type: "string", 
+                required: false, 
+                input: true 
+            },
+            location: { 
+                type: "string", 
+                required: false, 
+                input: true 
+            },
+            skills: { 
+                type: "string", 
+                required: false, 
+                input: true 
+            },
+            resumeUrl: { 
+                type: "string", 
+                required: false, 
+                input: true 
+            },
             githubUrl: { type: "string", required: false, input: true },
             linkedinUrl: { type: "string", required: false, input: true },
             portfolioUrl: { type: "string", required: false, input: true },

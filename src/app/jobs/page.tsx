@@ -44,7 +44,39 @@ export default function JobsPage() {
     }
 
     useEffect(() => {
-        fetchJobs();
+        let cancelled = false;
+
+        async function loadJobs() {
+            try {
+                const response = await getJobs();
+
+                if (!response.success) {
+                    throw new Error(
+                        response.message || "Failed to fetch jobs"
+                    );
+                }
+
+                if (!cancelled) {
+                    setJobs(response.data);
+                }
+            } catch (error) {
+                console.error(error);
+
+                if (!cancelled) {
+                    setError("Unable to load jobs. Please try again.");
+                }
+            } finally {
+                if (!cancelled) {
+                    setLoading(false);
+                }
+            }
+        }
+
+        loadJobs();
+
+        return () => {
+            cancelled = true;
+        };
     }, []);
 
     const filteredJobs = useMemo(() => {

@@ -1,5 +1,8 @@
+export type JobContent = string | string[];
+
 export interface Job {
     id: string;
+    ownerId?: string;
     title: string;
     company: string;
     location: string;
@@ -8,8 +11,8 @@ export interface Job {
         max: number;
     };
     description: string;
-    requirements: string[];
-    responsibilities: string[];
+    requirements: JobContent;
+    responsibilities: JobContent;
 }
 
 export interface JobsApiResponse {
